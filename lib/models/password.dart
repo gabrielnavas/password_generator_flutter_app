@@ -9,8 +9,8 @@ class Password {
 
   Password({
     int length = 20,
-    bool hasUppercase = false,
-    bool hasLowercase = false,
+    bool hasUppercase = true,
+    bool hasLowercase = true,
     bool hasNumbers = false,
     bool hasSymbols = false,
   }) {
