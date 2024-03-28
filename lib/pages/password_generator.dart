@@ -5,7 +5,7 @@ import 'package:password_generator/widget/area_form.dart';
 import 'package:password_generator/widget/password_filters_form.dart';
 import 'package:password_generator/widget/password_generated_form.dart';
 import 'package:password_generator/widget/password_length_form.dart';
-import 'package:password_generator/widget/password_type_form.dart';
+import 'package:password_generator/widget/password_types_form.dart';
 
 class PasswordGeneratorPage extends StatefulWidget {
   const PasswordGeneratorPage({super.key});
@@ -69,7 +69,7 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
             ),
             const Divider(),
             AreaForm(
-              child: PasswordTypeForm(
+              child: PasswordTypesForm(
                 passwordType: _passwordGeneratorForm.passwordType,
                 onChangeEasyToSay: onHandlePasswordType,
                 onChangeEasyToRead: onHandlePasswordType,

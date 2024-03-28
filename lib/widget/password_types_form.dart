@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:password_generator/models/password_generator_form.dart';
 
-class PasswordTypeForm extends StatelessWidget {
+class PasswordTypesForm extends StatelessWidget {
   PasswordType passwordType;
   void Function(PasswordType? value) onChangeEasyToSay;
   void Function(PasswordType? value) onChangeEasyToRead;
   void Function(PasswordType? value) onChangeAllCharacters;
 
-  PasswordTypeForm({
+  PasswordTypesForm({
     required this.passwordType,
     required this.onChangeEasyToSay,
     required this.onChangeEasyToRead,
