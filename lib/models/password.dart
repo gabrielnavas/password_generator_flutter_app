@@ -8,11 +8,11 @@ class Password {
   String _value = "";
 
   Password({
-    length,
-    hasUppercase,
-    hasLowercase,
-    hasNumbers,
-    hasSymbols,
+    int length = 20,
+    bool hasUppercase = false,
+    bool hasLowercase = false,
+    bool hasNumbers = false,
+    bool hasSymbols = false,
   }) {
     settings = PasswordSettings(
       length: length,
@@ -22,6 +22,10 @@ class Password {
       hasSymbols: hasSymbols,
     );
     _generate();
+  }
+
+  void changeLengthPassword(int length) {
+    settings.length = length;
   }
 
   Password clone() {

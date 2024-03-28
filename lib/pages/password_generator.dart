@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:password_generator/models/password.dart';
+import 'package:password_generator/models/password_generator_form.dart';
 
 class PasswordGeneratorPage extends StatefulWidget {
   const PasswordGeneratorPage({super.key});
@@ -12,13 +12,7 @@ class PasswordGeneratorPage extends StatefulWidget {
 class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
   final TextEditingController _passwordController = TextEditingController();
 
-  late Password _password;
-
-  @override
-  void initState() {
-    super.initState();
-    _initPassword();
-  }
+  PasswordGeneratorForm _passwordGeneratorForm = PasswordGeneratorForm();
 
   @override
   void dispose() {
@@ -30,7 +24,7 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
   Widget build(BuildContext context) {
     final double widthScreen = MediaQuery.of(context).size.width;
 
-    _passwordController.text = _password.value;
+    _passwordController.text = _passwordGeneratorForm.password.value;
 
     return Scaffold(
       appBar: AppBar(
@@ -53,22 +47,28 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  _password.settings.length.toStringAsFixed(0),
+                  _passwordGeneratorForm.password.settings.length
+                      .toStringAsFixed(0),
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 28),
                 ),
                 SizedBox(
                   width: widthScreen * .85,
                   child: Slider(
-                    value: double.parse(
-                        _password.settings.length.toStringAsFixed(2)),
-                    max: 50,
+                    value: double.parse(_passwordGeneratorForm
+                        .password.settings.length
+                        .toStringAsFixed(2)),
+                    min: 1.0,
+                    max: 50.0,
                     divisions: 50,
-                    label: _password.settings.length.round().toString(),
+                    label: _passwordGeneratorForm.password.settings.length
+                        .round()
+                        .toString(),
                     onChanged: (double value) {
                       setState(() {
-                        _password.settings.length = value.toInt();
-                        _refreshPassword();
+                        _passwordGeneratorForm
+                            .changeLengthPassword(value.toInt());
+                        _passwordGeneratorForm.refreshPassword();
                       });
                     },
                   ),
@@ -76,6 +76,90 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
               ],
             ),
             const Divider(),
+            const SizedBox(
+              child: Text(
+                'Tipo de senha',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Radio<PasswordType>(
+                  value: PasswordType.easyToSay,
+                  groupValue: _passwordGeneratorForm.passwordType,
+                  onChanged: (value) {
+                    if (value == null) {
+                      return;
+                    }
+                    setState(() {
+                      _passwordGeneratorForm.changeTypePassword(value);
+                      _passwordGeneratorForm.refreshPassword();
+                    });
+                  },
+                ),
+                const Text(
+                  'Fácil de falar',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Radio<PasswordType>(
+                  value: PasswordType.easyToRead,
+                  groupValue: _passwordGeneratorForm.passwordType,
+                  onChanged: (value) {
+                    if (value == null) {
+                      return;
+                    }
+                    setState(() {
+                      _passwordGeneratorForm.changeTypePassword(value);
+                      _passwordGeneratorForm.refreshPassword();
+                    });
+                  },
+                ),
+                const Text(
+                  'Fácil de ler',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Radio<PasswordType>(
+                  value: PasswordType.allCharacters,
+                  groupValue: _passwordGeneratorForm.passwordType,
+                  onChanged: (value) {
+                    if (value == null) {
+                      return;
+                    }
+                    setState(() {
+                      _passwordGeneratorForm.changeTypePassword(value);
+                      _passwordGeneratorForm.refreshPassword();
+                    });
+                  },
+                ),
+                const Text(
+                  'Todos os caracteres',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                ),
+              ],
+            ),
+            const Divider(),
+            const SizedBox(
+              child: Text(
+                'Filtros',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
             Row(
               children: [
                 Checkbox(
@@ -87,10 +171,14 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                       }
                       return Colors.blue;
                     }),
-                    value: _password.settings.hasUppercase,
+                    value:
+                        _passwordGeneratorForm.password.settings.hasUppercase,
                     onChanged: (bool? value) {
-                      setState(() => _password.settings.hasUppercase = value!);
-                      _refreshPassword();
+                      setState(() {
+                        _passwordGeneratorForm.password.settings.hasUppercase =
+                            value!;
+                        _passwordGeneratorForm.refreshPassword();
+                      });
                     }),
                 const Text(
                   'Letras maiúsculas',
@@ -109,10 +197,14 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                       }
                       return Colors.blueAccent;
                     }),
-                    value: _password.settings.hasLowercase,
+                    value:
+                        _passwordGeneratorForm.password.settings.hasLowercase,
                     onChanged: (bool? value) {
-                      setState(() => _password.settings.hasLowercase = value!);
-                      _refreshPassword();
+                      setState(() {
+                        _passwordGeneratorForm.password.settings.hasLowercase =
+                            value!;
+                        _passwordGeneratorForm.refreshPassword();
+                      });
                     }),
                 const Text(
                   'Letras minúsculas',
@@ -131,11 +223,16 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                       }
                       return Colors.blue;
                     }),
-                    value: _password.settings.hasNumbers,
-                    onChanged: (bool? value) {
-                      setState(() => _password.settings.hasNumbers = value!);
-                      _refreshPassword();
-                    }),
+                    value: _passwordGeneratorForm.password.settings.hasNumbers,
+                    onChanged: _passwordGeneratorForm.disableNumbersOption()
+                        ? null
+                        : (bool? value) {
+                            setState(() {
+                              _passwordGeneratorForm
+                                  .password.settings.hasNumbers = value!;
+                              _passwordGeneratorForm.refreshPassword();
+                            });
+                          }),
                 const Text(
                   'Números',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
@@ -153,14 +250,22 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                       }
                       return Colors.blue;
                     }),
-                    value: _password.settings.hasSymbols,
-                    onChanged: (bool? value) {
-                      setState(() => _password.settings.hasSymbols = value!);
-                      _refreshPassword();
-                    }),
+                    value: _passwordGeneratorForm.password.settings.hasSymbols,
+                    onChanged: _passwordGeneratorForm.disableSymbolsOption()
+                        ? null
+                        : (bool? value) {
+                            setState(() {
+                              _passwordGeneratorForm
+                                  .password.settings.hasSymbols = value!;
+                              _passwordGeneratorForm.refreshPassword();
+                            });
+                          }),
                 const Text(
                   'Símbolos',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
                 ),
               ],
             ),
@@ -170,18 +275,26 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
               children: [
                 const SizedBox(
                   child: Text(
-                    'Senha',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                    'Senha gerada',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      color: Colors.black87,
+                    ),
                   ),
                 ),
                 IconButton(
+                  color: Colors.blueAccent,
                   iconSize: 32,
                   onPressed: _copyToClipboard,
                   icon: const Icon(Icons.copy),
                 ),
                 IconButton(
+                  color: Colors.blueAccent,
                   iconSize: 32,
-                  onPressed: _refreshPassword,
+                  onPressed: () => setState(() {
+                    _passwordGeneratorForm.refreshPassword();
+                  }),
                   icon: const Icon(Icons.refresh),
                 ),
               ],
@@ -215,24 +328,7 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
   }
 
   Future<void> _copyToClipboard() async {
-    await Clipboard.setData(ClipboardData(text: _password.value));
-  }
-
-  void _initPassword() {
-    setState(() {
-      _password = Password(
-        length: 20,
-        hasUppercase: true,
-        hasLowercase: true,
-        hasNumbers: true,
-        hasSymbols: false,
-      );
-    });
-  }
-
-  void _refreshPassword() {
-    setState(() {
-      _password = _password.clone();
-    });
+    await Clipboard.setData(
+        ClipboardData(text: _passwordGeneratorForm.password.value));
   }
 }
