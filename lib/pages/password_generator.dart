@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:password_generator/models/password_generator_form.dart';
+import 'package:password_generator/widget/password_filters_form.dart';
 import 'package:password_generator/widget/password_length_form.dart';
 import 'package:password_generator/widget/password_type_form.dart';
 
@@ -71,126 +72,26 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                 onChangeAllCharacters: onHandlePasswordType,
               ),
               const Divider(),
-              const SizedBox(
-                child: Text(
-                  'Filtros disponíveis',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Colors.black87,
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Checkbox(
-                      checkColor: Colors.white,
-                      fillColor: MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.disabled)) {
-                          return Colors.white;
-                        }
-                        return Colors.blue;
-                      }),
-                      value:
-                          _passwordGeneratorForm.password.settings.hasUppercase,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _passwordGeneratorForm
-                              .password.settings.hasUppercase = value!;
-                          _passwordGeneratorForm.refreshPassword();
-                        });
-                      }),
-                  const Text(
-                    'Letras maiúsculas',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Checkbox(
-                      checkColor: Colors.white,
-                      fillColor: MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.disabled)) {
-                          return Colors.white;
-                        }
-                        return Colors.blueAccent;
-                      }),
-                      value:
-                          _passwordGeneratorForm.password.settings.hasLowercase,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _passwordGeneratorForm
-                              .password.settings.hasLowercase = value!;
-                          _passwordGeneratorForm.refreshPassword();
-                        });
-                      }),
-                  const Text(
-                    'Letras minúsculas',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Checkbox(
-                      checkColor: Colors.white,
-                      fillColor: MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.disabled)) {
-                          return Colors.white;
-                        }
-                        return Colors.blue;
-                      }),
-                      value:
-                          _passwordGeneratorForm.password.settings.hasNumbers,
-                      onChanged: _passwordGeneratorForm.disableNumbersOption()
-                          ? null
-                          : (bool? value) {
-                              setState(() {
-                                _passwordGeneratorForm
-                                    .password.settings.hasNumbers = value!;
-                                _passwordGeneratorForm.refreshPassword();
-                              });
-                            }),
-                  const Text(
-                    'Números',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Checkbox(
-                      checkColor: Colors.white,
-                      fillColor: MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.disabled)) {
-                          return Colors.white;
-                        }
-                        return Colors.blue;
-                      }),
-                      value:
-                          _passwordGeneratorForm.password.settings.hasSymbols,
-                      onChanged: _passwordGeneratorForm.disableSymbolsOption()
-                          ? null
-                          : (bool? value) {
-                              setState(() {
-                                _passwordGeneratorForm
-                                    .password.settings.hasSymbols = value!;
-                                _passwordGeneratorForm.refreshPassword();
-                              });
-                            }),
-                  const Text(
-                    'Símbolos',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
-                  ),
-                ],
+              PasswordFiltersForm(
+                passwordGeneratorForm: _passwordGeneratorForm,
+                onChangeUpperCase: (value) => setState(() {
+                  _passwordGeneratorForm.password.settings.hasUppercase =
+                      value!;
+                  _passwordGeneratorForm.refreshPassword();
+                }),
+                onChangeLowerCase: (value) => setState(() {
+                  _passwordGeneratorForm.password.settings.hasLowercase =
+                      value!;
+                  _passwordGeneratorForm.refreshPassword();
+                }),
+                onChangeNumbers: (value) => setState(() {
+                  _passwordGeneratorForm.password.settings.hasNumbers = value!;
+                  _passwordGeneratorForm.refreshPassword();
+                }),
+                onChangeSymbols: (value) => setState(() {
+                  _passwordGeneratorForm.password.settings.hasSymbols = value!;
+                  _passwordGeneratorForm.refreshPassword();
+                }),
               ),
               const Divider(),
               Row(
