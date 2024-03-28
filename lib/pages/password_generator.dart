@@ -35,300 +35,323 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
         ),
         backgroundColor: Colors.blueAccent,
       ),
-      body: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Tamanho da senha',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  _passwordGeneratorForm.password.settings.length
-                      .toStringAsFixed(0),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 28),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Tamanho da senha',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    _passwordGeneratorForm.password.settings.length
+                        .toStringAsFixed(0),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 28),
+                  ),
+                  SizedBox(
+                    width: widthScreen * .85,
+                    child: Slider(
+                      value: double.parse(_passwordGeneratorForm
+                          .password.settings.length
+                          .toStringAsFixed(2)),
+                      min: 1.0,
+                      max: 50.0,
+                      divisions: 50,
+                      label: _passwordGeneratorForm.password.settings.length
+                          .round()
+                          .toString(),
+                      onChanged: (double value) {
+                        setState(() {
+                          _passwordGeneratorForm
+                              .changeLengthPassword(value.toInt());
+                          _passwordGeneratorForm.refreshPassword();
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(),
+              const SizedBox(
+                child: Text(
+                  'Tipo de senha',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                    color: Colors.black87,
+                  ),
                 ),
-                SizedBox(
-                  width: widthScreen * .85,
-                  child: Slider(
-                    value: double.parse(_passwordGeneratorForm
-                        .password.settings.length
-                        .toStringAsFixed(2)),
-                    min: 1.0,
-                    max: 50.0,
-                    divisions: 50,
-                    label: _passwordGeneratorForm.password.settings.length
-                        .round()
-                        .toString(),
-                    onChanged: (double value) {
+              ),
+              Row(
+                children: [
+                  Radio<PasswordType>(
+                    value: PasswordType.easyToSay,
+                    groupValue: _passwordGeneratorForm.passwordType,
+                    onChanged: (value) {
+                      if (value == null) {
+                        return;
+                      }
                       setState(() {
-                        _passwordGeneratorForm
-                            .changeLengthPassword(value.toInt());
+                        _passwordGeneratorForm.changeTypePassword(value);
                         _passwordGeneratorForm.refreshPassword();
                       });
                     },
                   ),
-                ),
-              ],
-            ),
-            const Divider(),
-            const SizedBox(
-              child: Text(
-                'Tipo de senha',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                  color: Colors.black87,
-                ),
+                  const Text(
+                    'Fácil de falar',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  ),
+                ],
               ),
-            ),
-            Row(
-              children: [
-                Radio<PasswordType>(
-                  value: PasswordType.easyToSay,
-                  groupValue: _passwordGeneratorForm.passwordType,
-                  onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    setState(() {
-                      _passwordGeneratorForm.changeTypePassword(value);
-                      _passwordGeneratorForm.refreshPassword();
-                    });
-                  },
-                ),
-                const Text(
-                  'Fácil de falar',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Radio<PasswordType>(
-                  value: PasswordType.easyToRead,
-                  groupValue: _passwordGeneratorForm.passwordType,
-                  onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    setState(() {
-                      _passwordGeneratorForm.changeTypePassword(value);
-                      _passwordGeneratorForm.refreshPassword();
-                    });
-                  },
-                ),
-                const Text(
-                  'Fácil de ler',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Radio<PasswordType>(
-                  value: PasswordType.allCharacters,
-                  groupValue: _passwordGeneratorForm.passwordType,
-                  onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    setState(() {
-                      _passwordGeneratorForm.changeTypePassword(value);
-                      _passwordGeneratorForm.refreshPassword();
-                    });
-                  },
-                ),
-                const Text(
-                  'Todos os caracteres',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-              ],
-            ),
-            const Divider(),
-            const SizedBox(
-              child: Text(
-                'Filtros',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Checkbox(
-                    checkColor: Colors.white,
-                    fillColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.disabled)) {
-                        return Colors.white;
+              Row(
+                children: [
+                  Radio<PasswordType>(
+                    value: PasswordType.easyToRead,
+                    groupValue: _passwordGeneratorForm.passwordType,
+                    onChanged: (value) {
+                      if (value == null) {
+                        return;
                       }
-                      return Colors.blue;
-                    }),
-                    value:
-                        _passwordGeneratorForm.password.settings.hasUppercase,
-                    onChanged: (bool? value) {
                       setState(() {
-                        _passwordGeneratorForm.password.settings.hasUppercase =
-                            value!;
+                        _passwordGeneratorForm.changeTypePassword(value);
                         _passwordGeneratorForm.refreshPassword();
                       });
-                    }),
-                const Text(
-                  'Letras maiúsculas',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Checkbox(
-                    checkColor: Colors.white,
-                    fillColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.disabled)) {
-                        return Colors.white;
+                    },
+                  ),
+                  const Text(
+                    'Fácil de ler',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Radio<PasswordType>(
+                    value: PasswordType.allCharacters,
+                    groupValue: _passwordGeneratorForm.passwordType,
+                    onChanged: (value) {
+                      if (value == null) {
+                        return;
                       }
-                      return Colors.blueAccent;
-                    }),
-                    value:
-                        _passwordGeneratorForm.password.settings.hasLowercase,
-                    onChanged: (bool? value) {
                       setState(() {
-                        _passwordGeneratorForm.password.settings.hasLowercase =
-                            value!;
+                        _passwordGeneratorForm.changeTypePassword(value);
                         _passwordGeneratorForm.refreshPassword();
                       });
-                    }),
-                const Text(
-                  'Letras minúsculas',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Checkbox(
-                    checkColor: Colors.white,
-                    fillColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.disabled)) {
-                        return Colors.white;
-                      }
-                      return Colors.blue;
-                    }),
-                    value: _passwordGeneratorForm.password.settings.hasNumbers,
-                    onChanged: _passwordGeneratorForm.disableNumbersOption()
-                        ? null
-                        : (bool? value) {
-                            setState(() {
-                              _passwordGeneratorForm
-                                  .password.settings.hasNumbers = value!;
-                              _passwordGeneratorForm.refreshPassword();
-                            });
-                          }),
-                const Text(
-                  'Números',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Checkbox(
-                    checkColor: Colors.white,
-                    fillColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.disabled)) {
-                        return Colors.white;
-                      }
-                      return Colors.blue;
-                    }),
-                    value: _passwordGeneratorForm.password.settings.hasSymbols,
-                    onChanged: _passwordGeneratorForm.disableSymbolsOption()
-                        ? null
-                        : (bool? value) {
-                            setState(() {
-                              _passwordGeneratorForm
-                                  .password.settings.hasSymbols = value!;
-                              _passwordGeneratorForm.refreshPassword();
-                            });
-                          }),
-                const Text(
-                  'Símbolos',
+                    },
+                  ),
+                  const Text(
+                    'Todos os caracteres',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  ),
+                ],
+              ),
+              const Divider(),
+              const SizedBox(
+                child: Text(
+                  'Filtros disponíveis',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
+                    color: Colors.black87,
                   ),
                 ),
-              ],
-            ),
-            const Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  child: Text(
-                    'Senha gerada',
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                      checkColor: Colors.white,
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.disabled)) {
+                          return Colors.white;
+                        }
+                        return Colors.blue;
+                      }),
+                      value:
+                          _passwordGeneratorForm.password.settings.hasUppercase,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _passwordGeneratorForm
+                              .password.settings.hasUppercase = value!;
+                          _passwordGeneratorForm.refreshPassword();
+                        });
+                      }),
+                  const Text(
+                    'Letras maiúsculas',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                      checkColor: Colors.white,
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.disabled)) {
+                          return Colors.white;
+                        }
+                        return Colors.blueAccent;
+                      }),
+                      value:
+                          _passwordGeneratorForm.password.settings.hasLowercase,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _passwordGeneratorForm
+                              .password.settings.hasLowercase = value!;
+                          _passwordGeneratorForm.refreshPassword();
+                        });
+                      }),
+                  const Text(
+                    'Letras minúsculas',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                      checkColor: Colors.white,
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.disabled)) {
+                          return Colors.white;
+                        }
+                        return Colors.blue;
+                      }),
+                      value:
+                          _passwordGeneratorForm.password.settings.hasNumbers,
+                      onChanged: _passwordGeneratorForm.disableNumbersOption()
+                          ? null
+                          : (bool? value) {
+                              setState(() {
+                                _passwordGeneratorForm
+                                    .password.settings.hasNumbers = value!;
+                                _passwordGeneratorForm.refreshPassword();
+                              });
+                            }),
+                  const Text(
+                    'Números',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                      checkColor: Colors.white,
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.disabled)) {
+                          return Colors.white;
+                        }
+                        return Colors.blue;
+                      }),
+                      value:
+                          _passwordGeneratorForm.password.settings.hasSymbols,
+                      onChanged: _passwordGeneratorForm.disableSymbolsOption()
+                          ? null
+                          : (bool? value) {
+                              setState(() {
+                                _passwordGeneratorForm
+                                    .password.settings.hasSymbols = value!;
+                                _passwordGeneratorForm.refreshPassword();
+                              });
+                            }),
+                  const Text(
+                    'Símbolos',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
-                      color: Colors.black87,
                     ),
                   ),
-                ),
-                IconButton(
-                  color: Colors.blueAccent,
-                  iconSize: 32,
-                  onPressed: _copyToClipboard,
-                  icon: const Icon(Icons.copy),
-                ),
-                IconButton(
-                  color: Colors.blueAccent,
-                  iconSize: 32,
-                  onPressed: () => setState(() {
-                    _passwordGeneratorForm.refreshPassword();
-                  }),
-                  icon: const Icon(Icons.refresh),
-                ),
-              ],
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: _passwordController.text.isEmpty
-                  ? const Center(
-                      child: Text(
-                        "Selecione um dos filtros",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    )
-                  : TextField(
-                      maxLines: null,
-                      keyboardType: TextInputType.multiline,
+                ],
+              ),
+              const Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    child: Text(
+                      _passwordController.text.isEmpty
+                          ? 'Selecione um filtro...'
+                          : 'Senha gerada',
                       style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 27),
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                        color: Colors.black87,
                       ),
-                      textAlign: TextAlign.center,
-                      controller: _passwordController,
                     ),
-            ),
-          ],
+                  ),
+                  if (_passwordController.text.isNotEmpty)
+                    IconButton(
+                      color: Colors.blueAccent,
+                      iconSize: 32,
+                      onPressed: () => _copyToClipboard(context),
+                      icon: const Icon(Icons.copy),
+                    ),
+                  if (_passwordController.text.isNotEmpty)
+                    IconButton(
+                      color: Colors.blueAccent,
+                      iconSize: 32,
+                      onPressed: () => refreshPassword(context),
+                      icon: const Icon(Icons.refresh),
+                    ),
+                ],
+              ),
+              Container(
+                alignment: Alignment.center,
+                width: widthScreen * 0.90,
+                child: TextField(
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 27),
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                  textAlign: TextAlign.center,
+                  controller: _passwordController,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Future<void> _copyToClipboard() async {
-    await Clipboard.setData(
-        ClipboardData(text: _passwordGeneratorForm.password.value));
+  void _copyToClipboard(BuildContext context) {
+    Clipboard.setData(
+            ClipboardData(text: _passwordGeneratorForm.password.value))
+        .then((_) {
+      _showMessage('Senha copiada para área de transferência!');
+    });
+  }
+
+  void refreshPassword(BuildContext context) {
+    setState(() {
+      _passwordGeneratorForm.refreshPassword();
+      _showMessage('Senha gerada com sucesso!');
+    });
+  }
+
+  void _showMessage(String message) {
+    final snackBar = SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
