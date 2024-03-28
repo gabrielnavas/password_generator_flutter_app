@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:password_generator/models/password_generator_form.dart';
+import 'package:password_generator/widget/password_length_form.dart';
 
 class PasswordGeneratorPage extends StatefulWidget {
   const PasswordGeneratorPage({super.key});
@@ -40,42 +41,17 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                'Tamanho da senha',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    _passwordGeneratorForm.password.settings.length
-                        .toStringAsFixed(0),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 28),
-                  ),
-                  SizedBox(
-                    width: widthScreen * .85,
-                    child: Slider(
-                      value: double.parse(_passwordGeneratorForm
-                          .password.settings.length
-                          .toStringAsFixed(2)),
-                      min: 1.0,
-                      max: 50.0,
-                      divisions: 50,
-                      label: _passwordGeneratorForm.password.settings.length
-                          .round()
-                          .toString(),
-                      onChanged: (double value) {
-                        setState(() {
-                          _passwordGeneratorForm
-                              .changeLengthPassword(value.toInt());
-                          _passwordGeneratorForm.refreshPassword();
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              PasswordLengthForm(
+                  passwordLength:
+                      _passwordGeneratorForm.password.settings.length,
+                  widthWidget: widthScreen * 0.78,
+                  onChange: (double value) {
+                    setState(() {
+                      _passwordGeneratorForm
+                          .changeLengthPassword(value.toInt());
+                      _passwordGeneratorForm.refreshPassword();
+                    });
+                  }),
               const Divider(),
               const SizedBox(
                 child: Text(
