@@ -33,7 +33,6 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
     _passwordController.text = _password.value;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false, //don't forget this!
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
