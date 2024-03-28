@@ -49,102 +49,96 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
         backgroundColor: Colors.blueAccent,
       ),
       body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              PasswordLengthForm(
-                  passwordLength:
-                      _passwordGeneratorForm.password.settings.length,
-                  widthWidget: widthScreen * 0.78,
-                  onChange: (double value) {
-                    setState(() {
-                      _passwordGeneratorForm
-                          .changeLengthPassword(value.toInt());
-                      _passwordGeneratorForm.refreshPassword();
-                    });
-                  }),
-              const Divider(),
-              PasswordTypeForm(
-                passwordType: _passwordGeneratorForm.passwordType,
-                onChangeEasyToSay: onHandlePasswordType,
-                onChangeEasyToRead: onHandlePasswordType,
-                onChangeAllCharacters: onHandlePasswordType,
-              ),
-              const Divider(),
-              PasswordFiltersForm(
-                passwordGeneratorForm: _passwordGeneratorForm,
-                onChangeUpperCase: (value) => setState(() {
-                  _passwordGeneratorForm.password.settings.hasUppercase =
-                      value!;
-                  _passwordGeneratorForm.refreshPassword();
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            PasswordLengthForm(
+                passwordLength: _passwordGeneratorForm.password.settings.length,
+                widthWidget: widthScreen * 0.78,
+                onChange: (double value) {
+                  setState(() {
+                    _passwordGeneratorForm.changeLengthPassword(value.toInt());
+                    _passwordGeneratorForm.refreshPassword();
+                  });
                 }),
-                onChangeLowerCase: (value) => setState(() {
-                  _passwordGeneratorForm.password.settings.hasLowercase =
-                      value!;
-                  _passwordGeneratorForm.refreshPassword();
-                }),
-                onChangeNumbers: (value) => setState(() {
-                  _passwordGeneratorForm.password.settings.hasNumbers = value!;
-                  _passwordGeneratorForm.refreshPassword();
-                }),
-                onChangeSymbols: (value) => setState(() {
-                  _passwordGeneratorForm.password.settings.hasSymbols = value!;
-                  _passwordGeneratorForm.refreshPassword();
-                }),
-              ),
-              const Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    child: Text(
-                      _passwordController.text.isEmpty
-                          ? 'Selecione um filtro...'
-                          : 'Senha gerada',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        color: Colors.black87,
-                      ),
+            const Divider(),
+            PasswordTypeForm(
+              passwordType: _passwordGeneratorForm.passwordType,
+              onChangeEasyToSay: onHandlePasswordType,
+              onChangeEasyToRead: onHandlePasswordType,
+              onChangeAllCharacters: onHandlePasswordType,
+            ),
+            const Divider(),
+            PasswordFiltersForm(
+              passwordGeneratorForm: _passwordGeneratorForm,
+              onChangeUpperCase: (value) => setState(() {
+                _passwordGeneratorForm.password.settings.hasUppercase = value!;
+                _passwordGeneratorForm.refreshPassword();
+              }),
+              onChangeLowerCase: (value) => setState(() {
+                _passwordGeneratorForm.password.settings.hasLowercase = value!;
+                _passwordGeneratorForm.refreshPassword();
+              }),
+              onChangeNumbers: (value) => setState(() {
+                _passwordGeneratorForm.password.settings.hasNumbers = value!;
+                _passwordGeneratorForm.refreshPassword();
+              }),
+              onChangeSymbols: (value) => setState(() {
+                _passwordGeneratorForm.password.settings.hasSymbols = value!;
+                _passwordGeneratorForm.refreshPassword();
+              }),
+            ),
+            const Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  child: Text(
+                    _passwordController.text.isEmpty
+                        ? 'Selecione um filtro...'
+                        : 'Senha gerada',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      color: Colors.black87,
                     ),
                   ),
-                  if (_passwordController.text.isNotEmpty)
-                    IconButton(
-                      color: Colors.blueAccent,
-                      iconSize: 32,
-                      onPressed: () => _copyToClipboard(context),
-                      icon: const Icon(Icons.copy),
-                    ),
-                  if (_passwordController.text.isNotEmpty)
-                    IconButton(
-                      color: Colors.blueAccent,
-                      iconSize: 32,
-                      onPressed: () => _refreshPassword(context),
-                      icon: const Icon(Icons.refresh),
-                    ),
-                ],
-              ),
-              Container(
-                alignment: Alignment.center,
-                width: widthScreen * 0.90,
-                child: TextField(
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 27),
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                  ),
-                  textAlign: TextAlign.center,
-                  controller: _passwordController,
                 ),
+                if (_passwordController.text.isNotEmpty)
+                  IconButton(
+                    color: Colors.blueAccent,
+                    iconSize: 32,
+                    onPressed: () => _copyToClipboard(context),
+                    icon: const Icon(Icons.copy),
+                  ),
+                if (_passwordController.text.isNotEmpty)
+                  IconButton(
+                    color: Colors.blueAccent,
+                    iconSize: 32,
+                    onPressed: () => _refreshPassword(context),
+                    icon: const Icon(Icons.refresh),
+                  ),
+              ],
+            ),
+            Container(
+              alignment: Alignment.center,
+              width: widthScreen * 0.90,
+              child: TextField(
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                ),
+                textAlign: TextAlign.center,
+                controller: _passwordController,
               ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
         ),
       ),
     );
