@@ -47,7 +47,7 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text(
-              'Tamanho',
+              'Tamanho da senha',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             Row(
