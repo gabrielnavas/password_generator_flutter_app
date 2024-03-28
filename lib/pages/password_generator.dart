@@ -120,7 +120,7 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                     IconButton(
                       color: Colors.blueAccent,
                       iconSize: 32,
-                      onPressed: () => refreshPassword(context),
+                      onPressed: () => _refreshPassword(context),
                       icon: const Icon(Icons.refresh),
                     ),
                 ],
@@ -158,7 +158,7 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
     });
   }
 
-  void refreshPassword(BuildContext context) {
+  void _refreshPassword(BuildContext context) {
     setState(() {
       _passwordGeneratorForm.refreshPassword();
       _showMessage('Senha gerada com sucesso!');
