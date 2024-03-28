@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:password_generator/messages/show_message.dart';
 import 'package:password_generator/models/password_generator_form.dart';
+import 'package:password_generator/widget/area_form.dart';
 import 'package:password_generator/widget/password_filters_form.dart';
+import 'package:password_generator/widget/password_generated_form.dart';
 import 'package:password_generator/widget/password_length_form.dart';
 import 'package:password_generator/widget/password_type_form.dart';
 
@@ -52,87 +54,60 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            PasswordLengthForm(
-                passwordLength: _passwordGeneratorForm.password.settings.length,
-                widthWidget: widthScreen * 0.78,
-                onChange: (double value) {
-                  setState(() {
-                    _passwordGeneratorForm.changeLengthPassword(value.toInt());
-                    _passwordGeneratorForm.refreshPassword();
-                  });
+            AreaForm(
+              child: PasswordLengthForm(
+                  passwordLength:
+                      _passwordGeneratorForm.password.settings.length,
+                  widthWidget: widthScreen * 0.78,
+                  onChange: (double value) {
+                    setState(() {
+                      _passwordGeneratorForm
+                          .changeLengthPassword(value.toInt());
+                      _passwordGeneratorForm.refreshPassword();
+                    });
+                  }),
+            ),
+            const Divider(),
+            AreaForm(
+              child: PasswordTypeForm(
+                passwordType: _passwordGeneratorForm.passwordType,
+                onChangeEasyToSay: onHandlePasswordType,
+                onChangeEasyToRead: onHandlePasswordType,
+                onChangeAllCharacters: onHandlePasswordType,
+              ),
+            ),
+            const Divider(),
+            AreaForm(
+              child: PasswordFiltersForm(
+                passwordGeneratorForm: _passwordGeneratorForm,
+                onChangeUpperCase: (value) => setState(() {
+                  _passwordGeneratorForm.password.settings.hasUppercase =
+                      value!;
+                  _passwordGeneratorForm.refreshPassword();
                 }),
-            const Divider(),
-            PasswordTypeForm(
-              passwordType: _passwordGeneratorForm.passwordType,
-              onChangeEasyToSay: onHandlePasswordType,
-              onChangeEasyToRead: onHandlePasswordType,
-              onChangeAllCharacters: onHandlePasswordType,
+                onChangeLowerCase: (value) => setState(() {
+                  _passwordGeneratorForm.password.settings.hasLowercase =
+                      value!;
+                  _passwordGeneratorForm.refreshPassword();
+                }),
+                onChangeNumbers: (value) => setState(() {
+                  _passwordGeneratorForm.password.settings.hasNumbers = value!;
+                  _passwordGeneratorForm.refreshPassword();
+                }),
+                onChangeSymbols: (value) => setState(() {
+                  _passwordGeneratorForm.password.settings.hasSymbols = value!;
+                  _passwordGeneratorForm.refreshPassword();
+                }),
+              ),
             ),
             const Divider(),
-            PasswordFiltersForm(
-              passwordGeneratorForm: _passwordGeneratorForm,
-              onChangeUpperCase: (value) => setState(() {
-                _passwordGeneratorForm.password.settings.hasUppercase = value!;
-                _passwordGeneratorForm.refreshPassword();
-              }),
-              onChangeLowerCase: (value) => setState(() {
-                _passwordGeneratorForm.password.settings.hasLowercase = value!;
-                _passwordGeneratorForm.refreshPassword();
-              }),
-              onChangeNumbers: (value) => setState(() {
-                _passwordGeneratorForm.password.settings.hasNumbers = value!;
-                _passwordGeneratorForm.refreshPassword();
-              }),
-              onChangeSymbols: (value) => setState(() {
-                _passwordGeneratorForm.password.settings.hasSymbols = value!;
-                _passwordGeneratorForm.refreshPassword();
-              }),
-            ),
-            const Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  child: Text(
-                    _passwordController.text.isEmpty
-                        ? 'Selecione um filtro...'
-                        : 'Senha gerada',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ),
-                if (_passwordController.text.isNotEmpty)
-                  IconButton(
-                    color: Colors.blueAccent,
-                    iconSize: 32,
-                    onPressed: () => _copyToClipboard(context),
-                    icon: const Icon(Icons.copy),
-                  ),
-                if (_passwordController.text.isNotEmpty)
-                  IconButton(
-                    color: Colors.blueAccent,
-                    iconSize: 32,
-                    onPressed: () => _refreshPassword(context),
-                    icon: const Icon(Icons.refresh),
-                  ),
-              ],
-            ),
-            Container(
-              alignment: Alignment.center,
-              width: widthScreen * 0.90,
-              child: TextField(
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                ),
-                textAlign: TextAlign.center,
-                controller: _passwordController,
+            AreaForm(
+              child: PasswordGeneratedForm(
+                passwordController: _passwordController,
+                passwordGeneratorForm: _passwordGeneratorForm,
+                widthScreen: widthScreen,
+                refreshPassword: _refreshPassword,
+                password: _passwordGeneratorForm.password.value,
               ),
             ),
             const SizedBox(
@@ -144,29 +119,10 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
     );
   }
 
-  void _copyToClipboard(BuildContext context) {
-    Clipboard.setData(
-            ClipboardData(text: _passwordGeneratorForm.password.value))
-        .then((_) {
-      _showMessage('Senha copiada para área de transferência!');
-    });
-  }
-
   void _refreshPassword(BuildContext context) {
     setState(() {
       _passwordGeneratorForm.refreshPassword();
-      _showMessage('Senha gerada com sucesso!');
+      ShowMessage.showMessageSnack(context, 'Senha gerada com sucesso!');
     });
-  }
-
-  void _showMessage(String message) {
-    final snackBar = SnackBar(
-      content: Text(
-        message,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-      ),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

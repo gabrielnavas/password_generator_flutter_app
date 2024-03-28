@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:password_generator/models/password_generator_form.dart';
-import 'package:password_generator/models/password_settings.dart';
 
 class PasswordFiltersForm extends StatelessWidget {
   final PasswordGeneratorForm passwordGeneratorForm;
@@ -9,7 +8,7 @@ class PasswordFiltersForm extends StatelessWidget {
   final Function(bool? value) onChangeNumbers;
   final Function(bool? value) onChangeSymbols;
 
-  PasswordFiltersForm({
+  const PasswordFiltersForm({
     required this.passwordGeneratorForm,
     required this.onChangeUpperCase,
     required this.onChangeLowerCase,
