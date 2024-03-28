@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:password_generator/models/password_generator_form.dart';
 import 'package:password_generator/widget/password_length_form.dart';
+import 'package:password_generator/widget/password_type_form.dart';
 
 class PasswordGeneratorPage extends StatefulWidget {
   const PasswordGeneratorPage({super.key});
@@ -19,6 +20,16 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
   void dispose() {
     super.dispose();
     _passwordController.dispose();
+  }
+
+  void onHandlePasswordType(value) {
+    if (value == null) {
+      return;
+    }
+    setState(() {
+      _passwordGeneratorForm.changeTypePassword(value);
+      _passwordGeneratorForm.refreshPassword();
+    });
   }
 
   @override
@@ -53,78 +64,11 @@ class _PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                     });
                   }),
               const Divider(),
-              const SizedBox(
-                child: Text(
-                  'Tipo de senha',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Colors.black87,
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Radio<PasswordType>(
-                    value: PasswordType.easyToSay,
-                    groupValue: _passwordGeneratorForm.passwordType,
-                    onChanged: (value) {
-                      if (value == null) {
-                        return;
-                      }
-                      setState(() {
-                        _passwordGeneratorForm.changeTypePassword(value);
-                        _passwordGeneratorForm.refreshPassword();
-                      });
-                    },
-                  ),
-                  const Text(
-                    'Fácil de falar',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Radio<PasswordType>(
-                    value: PasswordType.easyToRead,
-                    groupValue: _passwordGeneratorForm.passwordType,
-                    onChanged: (value) {
-                      if (value == null) {
-                        return;
-                      }
-                      setState(() {
-                        _passwordGeneratorForm.changeTypePassword(value);
-                        _passwordGeneratorForm.refreshPassword();
-                      });
-                    },
-                  ),
-                  const Text(
-                    'Fácil de ler',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Radio<PasswordType>(
-                    value: PasswordType.allCharacters,
-                    groupValue: _passwordGeneratorForm.passwordType,
-                    onChanged: (value) {
-                      if (value == null) {
-                        return;
-                      }
-                      setState(() {
-                        _passwordGeneratorForm.changeTypePassword(value);
-                        _passwordGeneratorForm.refreshPassword();
-                      });
-                    },
-                  ),
-                  const Text(
-                    'Todos os caracteres',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                ],
+              PasswordTypeForm(
+                passwordType: _passwordGeneratorForm.passwordType,
+                onChangeEasyToSay: onHandlePasswordType,
+                onChangeEasyToRead: onHandlePasswordType,
+                onChangeAllCharacters: onHandlePasswordType,
               ),
               const Divider(),
               const SizedBox(
