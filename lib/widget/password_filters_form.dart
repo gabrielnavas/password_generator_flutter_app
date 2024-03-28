@@ -22,13 +22,25 @@ class PasswordFiltersForm extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(
-          child: Text(
-            'Filtros disponíveis',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-              color: Colors.black87,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Filtros disponíveis',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Colors.black87,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Icon(
+                Icons.filter_alt_outlined,
+                color: Colors.black54,
+              ),
+            ],
           ),
         ),
         Row(

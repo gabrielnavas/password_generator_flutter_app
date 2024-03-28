@@ -15,9 +15,21 @@ class PasswordLengthForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
-          'Tamanho da senha',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Tamanho da senha',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Icon(
+              Icons.numbers,
+              color: Colors.black54,
+            ),
+          ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

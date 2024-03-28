@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:password_generator/messages/show_message.dart';
 import 'package:password_generator/models/password_generator_form.dart';
 
@@ -21,6 +23,7 @@ class PasswordGeneratedForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const colorBackgroundItems = Color.fromARGB(179, 227, 227, 227);
     return Column(
       children: [
         Row(
@@ -28,9 +31,7 @@ class PasswordGeneratedForm extends StatelessWidget {
           children: [
             SizedBox(
               child: Text(
-                passwordController.text.isEmpty
-                    ? 'Selecione um filtro...'
-                    : 'Senha gerada',
+                passwordController.text.isEmpty ? '' : 'Senha gerada',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
@@ -38,21 +39,40 @@ class PasswordGeneratedForm extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(
+              width: 20,
+            ),
             if (passwordController.text.isNotEmpty)
               IconButton(
                 color: Colors.blueAccent,
                 iconSize: 32,
                 onPressed: () => _copyToClipboard(context),
                 icon: const Icon(Icons.copy),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateColor.resolveWith(
+                    (states) => colorBackgroundItems,
+                  ),
+                ),
               ),
+            const SizedBox(
+              width: 10,
+            ),
             if (passwordController.text.isNotEmpty)
               IconButton(
                 color: Colors.blueAccent,
                 iconSize: 32,
                 onPressed: () => refreshPassword(context),
                 icon: const Icon(Icons.refresh),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateColor.resolveWith(
+                    (states) => colorBackgroundItems,
+                  ),
+                ),
               ),
           ],
+        ),
+        const SizedBox(
+          height: 10,
         ),
         Container(
           alignment: Alignment.center,
@@ -60,9 +80,16 @@ class PasswordGeneratedForm extends StatelessWidget {
           child: TextField(
             maxLines: null,
             keyboardType: TextInputType.multiline,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
-            decoration: const InputDecoration(
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 27,
+            ),
+            decoration: InputDecoration(
               border: InputBorder.none,
+              filled: true,
+              hintStyle: TextStyle(color: Colors.grey[800]),
+              hintText: "Selecione um filtro...",
+              fillColor: colorBackgroundItems,
             ),
             textAlign: TextAlign.center,
             controller: passwordController,

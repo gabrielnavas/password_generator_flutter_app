@@ -20,13 +20,25 @@ class PasswordTypesForm extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(
-          child: Text(
-            'Tipo de senha',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-              color: Colors.black87,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Tipo de senha',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Colors.black87,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Icon(
+                Icons.question_mark_outlined,
+                color: Colors.black54,
+              ),
+            ],
           ),
         ),
         Row(
