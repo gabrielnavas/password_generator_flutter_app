@@ -45,7 +45,7 @@ class PasswordLengthForm extends StatelessWidget {
                 min: 1.0,
                 max: 50.0,
                 divisions: 50,
-                label: passwordLength.toStringAsFixed(2),
+                label: passwordLength.toString(),
                 onChanged: onChange,
               ),
             ),
